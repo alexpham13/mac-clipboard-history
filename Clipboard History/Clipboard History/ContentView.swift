@@ -8,28 +8,33 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var testItem = 0
+    @State var clipboardHistory: [String] = []
     var body: some View {
         VStack {
             Text("Clipboard History")
-            if testItem == 0 {
+            if clipboardHistory.isEmpty {
                 Text("No Clipboard Items Yet")
             }
-            HStack {
-                Button("Add test item") {
-                    testItem = testItem + 1
-                }
-                
-                
-                
-                Button("Remove test item") {
-                    if testItem > 0 {
-                        testItem = testItem - 1
-                    }
-                }
-                
+        HStack {
+            Button("Add test item") {
+                clipboardHistory.insert("Test Item \(clipboardHistory.count + 1)"
+                                        , at: 0)
             }
-            Text("Items \(testItem)")
+            
+                
+            Button("Remove test item") {
+                if !clipboardHistory.isEmpty {
+                    clipboardHistory.remove(at: 0)
+                }
+            }
+                }
+    
+            ForEach(clipboardHistory, id: \.self) {item in
+            Text(item)}
+    Text("Items: \(clipboardHistory.count)")        }
+        
+        Button("Clear History") {
+            clipboardHistory.removeAll()
         }
         .padding()
     }
