@@ -15,32 +15,22 @@ struct ContentView: View {
   
     func checkClipboard () {
         if previousChangeCount != pasteboard.changeCount {
+            let copiedText = pasteboard.string(forType: .string)
+            if let text = copiedText {
+                clipboardHistory.insert(text, at: 0)
+            }
             previousChangeCount = pasteboard.changeCount
         }
     }
     var body: some View {
-        let copiedText = pasteboard.string(forType: .string)
-        if let text = copiedText {
-            Text(text)
-        
-        }
+       
         VStack {
             Text("Clipboard History")
             if clipboardHistory.isEmpty {
                 Text("No Clipboard Items Yet")
             }
         HStack {
-            Button("Add test item") {
-                clipboardHistory.insert("Test Item \(clipboardHistory.count + 1)"
-                                        , at: 0)
-            }
             
-                
-            Button("Remove test item") {
-                if !clipboardHistory.isEmpty {
-                    clipboardHistory.remove(at: 0)
-                }
-            }
                 }
     
             ForEach(clipboardHistory, id: \.self) {item in
