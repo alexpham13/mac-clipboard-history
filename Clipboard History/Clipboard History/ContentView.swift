@@ -6,10 +6,24 @@
 //
 
 import SwiftUI
+import AppKit
 
 struct ContentView: View {
     @State var clipboardHistory: [String] = []
+    @State var previousChangeCount: Int = 0
+    let pasteboard = NSPasteboard.general
+  
+    func checkClipboard () {
+        if previousChangeCount != pasteboard.changeCount {
+            previousChangeCount = pasteboard.changeCount
+        }
+    }
     var body: some View {
+        let copiedText = pasteboard.string(forType: .string)
+        if let text = copiedText {
+            Text(text)
+        
+        }
         VStack {
             Text("Clipboard History")
             if clipboardHistory.isEmpty {
@@ -37,6 +51,11 @@ struct ContentView: View {
             clipboardHistory.removeAll()
         }
         .padding()
+        .onAppear {
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+                checkClipboard()
+            }
+        }
     }
 }
 #Preview {
