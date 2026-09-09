@@ -17,7 +17,13 @@ struct ContentView: View {
         if previousChangeCount != pasteboard.changeCount {
             let copiedText = pasteboard.string(forType: .string)
             if let text = copiedText {
+                if let index = clipboardHistory.firstIndex(of: text) {
+                    clipboardHistory.remove(at: index)
+                }
                 clipboardHistory.insert(text, at: 0)
+                if clipboardHistory.count > 50 {
+                    clipboardHistory.removeLast()
+                }
                 saveHistory()
             }
             previousChangeCount = pasteboard.changeCount
@@ -43,15 +49,27 @@ struct ContentView: View {
                 
             
             ForEach(clipboardHistory, id: \.self) {item in
-                Button(item) {
-                    pasteboard.clearContents()
-                    pasteboard.setString(item, forType: .string)
+                
+                HStack {
+                    
+                    
+                    Button(item) {
+                        pasteboard.clearContents()
+                        pasteboard.setString(item, forType: .string)
+                    }
+                    Button("Delete") {
+                        if let index = clipboardHistory.firstIndex(of: item) {
+                            clipboardHistory.remove(at: index)
+                            saveHistory()
+                        }
+                    }
                 }
             }
                     Text("Items: \(clipboardHistory.count)")        }
             
         Button("Clear History") {
             clipboardHistory.removeAll()
+            saveHistory()
         }
         .padding()
         .onAppear {
