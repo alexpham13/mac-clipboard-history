@@ -39,52 +39,78 @@ struct ContentView: View {
             clipboardHistory = savedHistory
         }
     }
+    func rowBackground(item: String) -> Color {
+        if item == pasteboard.string(forType: .string) {
+            return Color.blue.opacity(0.15)
+        }else{ return Color.clear
+        }
+    }
     
     var body: some View {
         
         VStack {
-            HStack {
+            HStack (spacing: 25) {
                 Text("Clipboard History")
                     .font(.title)
                     .bold()
+                    .lineLimit(1)
                 Spacer ()
                 
-                Button("Clear History") {
+                Text("Items: \(clipboardHistory.count)")
+            
+                Button("Clear History", role: .destructive) {
                     clipboardHistory.removeAll()
                     saveHistory()
                 }
+                .foregroundStyle(Color(red: 0.9, green: 0.1, blue: 0.1))
             }
                 if clipboardHistory.isEmpty {
-                    Text("No Clipboard Items Yet")
+                    VStack {
+                        Image(systemName: "doc.on.clipboard")
+                            .font(.largeTitle)
+                        Text("No Clipboard Items Yet")
+                    }
+                    .foregroundStyle(.secondary)
                 }
             
-            
-            ForEach(clipboardHistory, id: \.self) {item in
+            ScrollView {
                 
-                HStack {
+                ForEach(clipboardHistory, id: \.self) {item in
                     
-                    Button {
-                        pasteboard.clearContents()
-                        pasteboard.setString(item, forType: .string)
-                    } label: {
-                        Text(item)
-                            .lineLimit(2)
-                            .multilineTextAlignment(.leading)
-                    }
-                    
-                    Spacer()
-                    
-                    Button("Delete") {
-                        if let index = clipboardHistory.firstIndex(of: item) {
-                            clipboardHistory.remove(at: index)
-                            saveHistory()
+                    HStack {
+                        
+                        Button {
+                            pasteboard.clearContents()
+                            pasteboard.setString(item, forType: .string)
+                        } label: {
+                            Text(item)
+                                .lineLimit(2)
+                                .multilineTextAlignment(.leading)
+                        }
+                        .buttonStyle(.plain)
+                        
+                        Spacer()
+                        
+                        Button {
+                            if let index = clipboardHistory.firstIndex(of: item) {
+                                clipboardHistory.remove(at: index)
+                                saveHistory()
+                            }
+                        } label: {
+                            Label ("Delete", systemImage: "trash")
+                            
                         }
                     }
+                    .padding(.vertical, 8)
+                    .background(rowBackground(item: item))
+                    .cornerRadius(10)
+                    .padding(.horizontal, 16)
+                    Divider()
+                    
                 }
-                .padding(.vertical, 6)
-                Divider()
             }
-            Text("Items: \(clipboardHistory.count)")        }
+                   }
+        .frame(minWidth: 500)
         
         
         
