@@ -157,6 +157,14 @@ struct ContentView: View {
                                         .frame(maxHeight: 150)
                                     Spacer()
                                     
+                                    Button {
+                                        if let index = clipboardHistory.firstIndex(where: { $0.id == item.id }) {
+                                            clipboardHistory.remove(at: index)
+                                        saveHistory()
+                                        }
+                                    } label: {
+                                        Label ("Delete", systemImage: "trash")
+                                    }
                                 }
                                 .background(imageRowBackground(imageData: imageData))
                             }
