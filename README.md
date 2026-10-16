@@ -27,16 +27,16 @@ A lightweight clipboard history manager for macOS, built using **Swift, SwiftUI,
 
 ## How It Works
 
-1. **Clipboard Monitoring:** The application checks the system clipboard every second using `NSPasteboard`.
-2. **Change Detection:** The `changeCount` property determines whether the clipboard has been updated.
+1. **Clipboard Monitoring:** The application checks the system clipboard every second using NSPasteboard.
+2. **Change Detection:** The changeCount property determines whether the clipboard has been updated.
 3. **History Management:** New text or image content is added to the beginning of the history list.
 4. **Duplicate Detection:** Existing items are moved to the top rather than stored multiple times.
-5. **Local Persistence:** Clipboard entries are encoded and saved using `UserDefaults`.
+5. **Local Persistence:** Clipboard entries are encoded and saved using UserDefaults.
 6. **Clipboard Restoration:** Selecting an entry writes its content back to the system clipboard.
 
 ## Project Structure
 
-The application uses a `ClipboardItem` model to represent clipboard entries.
+The application uses a ClipboardItem model to represent clipboard entries.
 
 Each item contains:
 
@@ -44,7 +44,7 @@ Each item contains:
 - Optional text content
 - Optional image data
 
-The model conforms to `Identifiable` and `Codable`, supporting SwiftUI list rendering and local persistence.
+The model conforms to Identifiable and Codable, supporting SwiftUI list rendering and local persistence.
 
 ## Challenges and What I Learned
 
@@ -52,12 +52,12 @@ Building this application helped me gain hands-on experience with macOS developm
 
 Key learning experiences included:
 
-- Understanding how `NSPasteboard` detects clipboard changes.
+- Understanding how NSPasteboard detects clipboard changes.
 - Using timers to monitor system activity.
 - Managing dynamic application state with SwiftUI.
 - Handling optional values and different clipboard data types.
 - Implementing duplicate detection and history limits.
-- Persisting custom Swift data structures using `Codable` and `UserDefaults`.
+- Persisting custom Swift data structures using Codable and UserDefaults.
 - Building and packaging a macOS application for use on another computer.
 
 ## Future Improvements
